@@ -1,0 +1,80 @@
+#!/bin/python3
+
+import sys
+import math
+
+
+def velocity_vector(x0, y0, z0, x1, y1, z1):
+
+    x = x1 - x0
+    y = y1 - y0
+    z = z1 - z0
+    print("The velocity vector of the ball is:")
+    print("({:.2f}, {:.2f}, {:.2f})".format(x, y, z))
+    return z
+
+
+def coordinates_end(x0, y0, z0, x1, y1, z1, n):
+
+    x_end = (x1 - x0) * n + x1
+    y_end = (y1 - y0) * n + y1
+    z_end = (z1 - z0) * n + z1
+    print("At time t + " + str(n) + ", ball coordinates will be:")
+    print("({:.2f}, {:.2f}, {:.2f})".format(x_end, y_end, z_end))
+
+
+def incident_angle(x0, y0, z0, x1, y1, z1):
+
+    if (z1 == 0) and (z1 - z0) == 0:
+        print("The ball won't reach the paddle.")
+    norme = math.sqrt(((x1 - x0)**2 + (y1 - y0)**2 + (z1 - z0)**2))
+    angle = math.degrees(math.asin(math.sqrt((z1 - z0)**2) / norme))
+    if z1 < 0 and (z1 - z0) > 0 or (z1 - z0) == 0:
+        print("The ball won't reach the paddle.")
+    else:
+        print("The incidence angle is:")
+        print("{:.2f}".format(angle), "degrees")
+
+
+def is_float(nb):
+
+    try:
+        float(nb)
+        return True
+    except:
+        return False
+    
+
+def pong():
+
+    check = 0
+
+    if len(sys.argv) != 8:
+        print("Too few/many arguments (only 7)")
+        sys.exit(84)
+
+    for i in range(1, 8):
+        if is_float(sys.argv[i]) and sys.argv[7].isdigit():           
+            check = 1
+        else:
+            check = 0
+            break
+
+    if check == 1:
+        x0 = float(sys.argv[1])
+        y0 = float(sys.argv[2])
+        z0 = float(sys.argv[3])
+        x1 = float(sys.argv[4])
+        y1 = float(sys.argv[5])
+        z1 = float(sys.argv[6])
+        n = int(sys.argv[7])
+    else:
+        print("Incorrect argument or incorrect type of time shift")
+        sys.exit(84)
+
+    velocity_vector(x0, y0, z0, x1, y1, z1)
+    coordinates_end(x0, y0, z0, x1, y1, z1, n)
+    incident_angle(x0, y0, z0, x1, y1, z1)
+
+
+pong()
